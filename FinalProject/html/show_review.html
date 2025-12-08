@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/movie_show.css">
-    <title>Movie/Show - CineReview</title>
+    <link rel="stylesheet" href="../styles/movie_show.css">
+    <title>Show - CineReview</title>
 </head>
 
 <body>
@@ -17,6 +17,7 @@
                 <li><a href="#">Movies</a></li>
                 <li><a href="#">TV Shows</a></li>
                 <li><a href="#">Top Rated</a></li>
+                <li><a href="/html/movie_review.html">Review a Movie</a></li>
             </ul>
             <section id="login">
                 <button>Login</button>
@@ -31,15 +32,15 @@
         </section>
 
         <section id="Review Form">
-            <h2>Submit a Review</h2>
-            <form>
+            <h2>Submit a Show Review</h2>
+            <form method="post" action="../process.php">
                 <div>
                     <label for="username">Username:</label>
                     <input type="text" id="username" name="username" required>
                 </div>
 
                 <div>
-                    <label for="show-name">Show/Movie Name:</label>
+                    <label for="show-name">Show Name:</label>
                     <input type="text" id="show-name" name="show-name" required>
                 </div>
 
@@ -57,29 +58,34 @@
                         <option value="3">Season 3</option>
                         <option value="4">Season 4</option>
                         <option value="5">Season 5</option>
+                        <option value="5">Season 6</option>
+                        <option value="5">Season 7</option>
+                        <option value="5">Season 8</option>
+                        <option value="5">Season 9</option>
+                        <option value="5">Season 10</option>
                     </select>
                 </div>
 
                 <div>
                     <legend>Genre:</legend>
                     <div>
-                        <input type="checkbox" id="action" name="genre" value="action">
+                        <input type="checkbox" id="action" name="genre[]" value="action">
                         <label for="action">Action</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="drama" name="genre" value="drama">
+                        <input type="checkbox" id="drama" name="genre[]" value="drama">
                         <label for="drama">Drama</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="comedy" name="genre" value="comedy">
+                        <input type="checkbox" id="comedy" name="genre[]" value="comedy">
                         <label for="comedy">Comedy</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="thriller" name="genre" value="thriller">
+                        <input type="checkbox" id="thriller" name="genre[]" value="thriller">
                         <label for="thriller">Thriller</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="sci-fi" name="genre" value="sci-fi">
+                        <input type="checkbox" id="sci-fi" name="genre[]" value="sci-fi">
                         <label for="sci-fi">Sci-Fi</label>
                     </div>
                 </div>
@@ -113,7 +119,7 @@
                     <textarea id="review-text" name="review-text" rows="8" cols="50" required></textarea>
                 </div>
 
-                <button type="submit">Submit Review</button>
+                <button type="submit" id="submitShowReview" name="submitShowReview">Submit Review</button>
             </form>
         </section>
 

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/movie_show.css">
+    <title>Movie - CineReview</title>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <h1>CineReview</h1>
+            <ul>
+                <li><a href="FinalProject/index.html">Home</a></li>
+                <li><a href="#">Movies</a></li>
+                <li><a href="#">TV Shows</a></li>
+                <li><a href="#">Top Rated</a></li>
+                <li><a href="/html/show_review.html">Review a Show</a></li>
+            </ul>
+            <section id="login">
+                <button>Login</button>
+            </section>
+        </nav>
+    </header>
+
+    <main>
+
+        <section id="Movie-Show Display">
+            <!-- Will be filled dynamically with movie/show details -->
+        </section>
+
+        <section id="Review Form">
+            <h2>Submit a Movie Review</h2>
+            <form method="post" action="../process.php">
+                <div>
+                    <label for="username">Username:</label> <!-- Should be automatic once sign in is finished -->
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div>
+                    <label for="movieName">Movie Name:</label>
+                    <input type="text" id="movieName" name="movieName" required>
+                </div>
+
+                <div>
+                    <label for="releaseYear">Release Year:</label>
+                    <input type="text" id="releaseYear" name="releaseYear" required>
+                </div>
+
+                <div>
+                    <legend>Genre:</legend>
+                    <div>
+                        <input type="checkbox" id="action" name="genre[]" value="action">
+                        <label for="action">Action</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="drama" name="genre[]" value="drama">
+                        <label for="drama">Drama</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="comedy" name="genre[]" value="comedy">
+                        <label for="comedy">Comedy</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="thriller" name="genre[]" value="thriller">
+                        <label for="thriller">Thriller</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="sci-fi" name="genre[]" value="sci-fi">
+                        <label for="sci-fi">Sci-Fi</label>
+                    </div>
+                </div>
+
+                <div>
+                    <legend>Rating:</legend>
+                    <div>
+                        <input type="radio" id="star1" name="rating" value="1" required>
+                        <label for="star1">1 Star</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2">2 Stars</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3">3 Stars</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4">4 Stars</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="star5" name="rating" value="5">
+                        <label for="star5">5 Stars</label>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="review-text">Review:</label>
+                    <textarea id="review-text" name="review-text" rows="8" cols="50" required></textarea>
+                </div>
+
+                <button type="submit" id="submitMovieReview" name="submitMovieReview">Submit Review</button>
+            </form>
+        </section>
+
+    </main>
+
+    <footer>
+        <section id="About">
+            <h4>CineReview</h4>
+            <p>Your trusted source for honest movie reviews.</p>
+        </section>
+
+        <section id="Footer Row 1">
+            <h4>Movies</h4>
+            <ul>
+                <li><a href="#">Now Playing</a></li>
+                <li><a href="#">Coming Soon</a></li>
+                <li><a href="#">Top Rated</a></li>
+            </ul>
+        </section>
+
+        <section id= "Footer Row 2 ">
+            <h4>Community</h4>
+            <ul>
+                <li><a href="#">Reviews</a></li>
+                <li><a href="#">Discussions</a></li>
+                <li><a href="#">Write a Review</a></li>
+            </ul>
+        </section>
+
+        <section id="Footer Row 3">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+        </section>
+    </footer>
+
+</body>
+
+</html>

@@ -1,4 +1,8 @@
 <?php
+/** 
+ * Sources: (Ref 1) => Getting checkbox data from post method: https://www.geeksforgeeks.org/php/how-to-get-_post-from-multiple-check-boxes/#
+ * 
+*/
 
 /****************** Database Connection ******************/
 
@@ -23,6 +27,88 @@ if ($conn->connect_error) {
 /****************** Database Actions ******************/
 
 //***** Create *****//
+
+// Write Movie Review
+if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['submitMovieReview']))) {
+    try {
+        // Get and sanitize inputs from form
+        $username = htmlspecialchars($_POST['username']);
+        $movieName = htmlspecialchars($_POST['movieName']);
+        $releaseYear = htmlspecialchars($_POST['releaseYear']);
+        $genres = (isset($_POST['genre'])) ? $_POST['genre'] : array(); // Help from geeksforgeeks (Ref 1)
+        $rating = $_POST['rating'];
+        $reviewText = htmlspecialchars($_POST['review-text']);
+
+        // Genres built as string
+        $genreList = "";
+        if (count($genres) > 0) {
+            foreach($genres as $genre) {
+                $genreList .= $genre . ','; // Genres will be saved as a list deliminated by a comma: (comedy,action,drama,)
+            }
+        } else {
+            echo "You must select at least one genre!"; // Replace this with proper error handling
+        }
+
+        // Build and execute the SQL INSERT statment
+        $stmt = $conn->prepare(
+            "INSERT INTO movieReviews
+            (authorUsername, movieTitle, releaseYear, genres, starRating, reviewText)
+            VALUES
+            (?, ?, ?, ?, ?, ?)");
+
+        $stmt->bind_param("ssisds", $username, $movieName, $releaseYear, $genreList, $rating, $reviewText);
+        $stmt->execute();
+
+        header("Location: index.html"); // Replace with redirect to user's reviews after account are finished
+        exit;
+
+        } catch (Exception $error) {
+            echo "Error: " . $error->getMessage();
+        }
+}
+
+// Write Show Review
+if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['submitShowReview']))) {
+    try {
+        // Get and sanitize inputs from form
+        $username = htmlspecialchars($_POST['username']);
+        $showName = htmlspecialchars($_POST['show-name']);
+        $releaseYear = htmlspecialchars($_POST['release-year']);
+        $season = htmlspecialchars($_POST['season']);
+        $genres = (isset($_POST['genre'])) ? $_POST['genre'] : array(); // Help from geeksforgeeks (Ref 1)
+        $rating = $_POST['rating'];
+        $reviewText = htmlspecialchars($_POST['review-text']);
+
+        // Genres built as string
+        $genreList = "";
+        if (count($genres) > 0) {
+            foreach($genres as $genre) {
+                $genreList .= $genre . ','; // Genres will be saved as a list deliminated by a comma: (comedy,action,drama,)
+            }
+        } else {
+            echo "You must select at least one genre!"; // Replace this with proper error handling
+        }
+
+        // Build and execute the SQL INSERT statment
+        $stmt = $conn->prepare(
+            "INSERT INTO tvShowReviews
+            (authorUsername, showTitle, season, releaseYear, genres, starRating, reviewText)
+            VALUES
+            (?, ?, ?, ?, ?, ?, ?)");
+
+        $stmt->bind_param("ssiisds", $username, $showName, $season, $releaseYear, $genreList, $rating, $reviewText);
+        $stmt->execute();
+
+        header("Location: index.html"); // Replace with redirect to user's reviews after account are finished
+        exit;
+
+        } catch (Exception $error) {
+            echo "Error: " . $error->getMessage();
+        }
+}
+
+
+
 
 //***** Read *****//
 
