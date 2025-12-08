@@ -1,0 +1,207 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: black;
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+main {
+    flex: 1;
+}
+
+/* Header & Navigation */
+header {
+    background-color: white;
+    border-bottom: 1px solid lightgray;
+    padding: 0 40px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    gap: 40px;
+}
+
+nav h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+nav ul {
+    display: flex;
+    gap: 24px;
+}
+
+nav ul li a {
+    font-size: 0.875rem;
+    color: gray;
+}
+
+nav ul li a:hover {
+    color: black;
+}
+
+#login {
+    margin-left: auto;
+}
+
+#login button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+#login button:hover {
+    background-color: dimgray;
+}
+
+/* Login Form Section */
+#Login\ Form {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 40px;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 12px;
+}
+
+#Login\ Form h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+#Login\ Form form {
+    display: flex;
+    flex-direction: column;
+}
+
+#Login\ Form label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: black;
+}
+
+#Login\ Form input {
+    padding: 12px 16px;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    background-color: whitesmoke;
+}
+
+#Login\ Form input:focus {
+    outline: none;
+    border-color: darkgray;
+    background-color: white;
+}
+
+#Login\ Form button {
+    background-color: gold;
+    color: black;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+}
+
+#Login\ Form button:hover {
+    background-color: yellow;
+}
+
+/* Footer */
+footer {
+    background-color: whitesmoke;
+    padding: 60px 40px 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    border-top: 1px solid lightgray;
+}
+
+footer section h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+#About p {
+    font-size: 0.875rem;
+    color: gray;
+}
+
+footer section ul li {
+    margin-bottom: 10px;
+}
+
+footer section ul li a {
+    font-size: 0.875rem;
+    color: gray;
+}
+
+footer section ul li a:hover {
+    color: black;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 16px 0;
+        gap: 16px;
+    }
+
+    #Login\ Form {
+        margin: 40px 20px;
+    }
+
+    footer {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    header, footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    #Login\ Form {
+        padding: 24px;
+    }
+
+    footer {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,282 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: black;
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+main {
+    flex: 1;
+}
+
+/* Header & Navigation */
+header {
+    background-color: white;
+    border-bottom: 1px solid lightgray;
+    padding: 0 40px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    gap: 40px;
+}
+
+nav h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+nav ul {
+    display: flex;
+    gap: 24px;
+}
+
+nav ul li a {
+    font-size: 0.875rem;
+    color: gray;
+}
+
+nav ul li a:hover {
+    color: black;
+}
+
+#login {
+    margin-left: auto;
+}
+
+#login button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+#login button:hover {
+    background-color: dimgray;
+}
+
+/* Movie/Show Display Section */
+#Movie-Show\ Display {
+    background-color: darkslategray;
+    color: white;
+    padding: 60px 40px;
+    min-height: 300px;
+}
+
+/* Review Form Section */
+#Review\ Form {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 40px;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 12px;
+}
+
+#Review\ Form h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 32px;
+}
+
+#Review\ Form form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+#Review\ Form form > div {
+    display: flex;
+    flex-direction: column;
+}
+
+#Review\ Form label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: black;
+}
+
+#Review\ Form legend {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: black;
+}
+
+#Review\ Form input[type="text"] {
+    padding: 12px 16px;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: whitesmoke;
+}
+
+#Review\ Form input[type="text"]:focus {
+    outline: none;
+    border-color: darkgray;
+    background-color: white;
+}
+
+#Review\ Form select {
+    padding: 12px 16px;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: whitesmoke;
+    cursor: pointer;
+}
+
+#Review\ Form select:focus {
+    outline: none;
+    border-color: darkgray;
+    background-color: white;
+}
+
+/* Checkbox and Radio Groups */
+#Review\ Form input[type="checkbox"],
+#Review\ Form input[type="radio"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+#Review\ Form div > div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+#Review\ Form div > div label {
+    margin-bottom: 0;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+/* Textarea */
+#Review\ Form textarea {
+    padding: 12px 16px;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: whitesmoke;
+    font-family: inherit;
+    resize: vertical;
+}
+
+#Review\ Form textarea:focus {
+    outline: none;
+    border-color: darkgray;
+    background-color: white;
+}
+
+/* Submit Button */
+#Review\ Form button[type="submit"] {
+    background-color: gold;
+    color: black;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+#Review\ Form button[type="submit"]:hover {
+    background-color: yellow;
+}
+
+/* Footer */
+footer {
+    background-color: whitesmoke;
+    padding: 60px 40px 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    border-top: 1px solid lightgray;
+}
+
+footer section h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+#About p {
+    font-size: 0.875rem;
+    color: gray;
+}
+
+footer section ul li {
+    margin-bottom: 10px;
+}
+
+footer section ul li a {
+    font-size: 0.875rem;
+    color: gray;
+}
+
+footer section ul li a:hover {
+    color: black;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 16px 0;
+        gap: 16px;
+    }
+
+    #Review\ Form {
+        margin: 40px 20px;
+    }
+
+    footer {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    header, footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    #Movie-Show\ Display {
+        padding: 40px 20px;
+    }
+
+    #Review\ Form {
+        padding: 24px;
+    }
+
+    footer {
+        grid-template-columns: 1fr;
+    }
+}
