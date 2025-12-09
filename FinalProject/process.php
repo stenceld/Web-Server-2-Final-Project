@@ -1,7 +1,8 @@
 <?php
 /** 
- * Sources: (Ref 1) => Getting checkbox data from post method: https://www.geeksforgeeks.org/php/how-to-get-_post-from-multiple-check-boxes/#
- * 
+ * Sources: 
+ * (Ref 1) => Getting checkbox data from post method: https://www.geeksforgeeks.org/php/how-to-get-_post-from-multiple-check-boxes/#
+ * (Ref 2) => cURL setup for interacting with The Movie Database API: https://developer.themoviedb.org/reference/getting-started
 */
 
 /****************** Database Connection ******************/
@@ -14,6 +15,36 @@ $conn = new mysqli($hostname, $username, $password, $database);
 
 if ($conn->connect_error) {
     die("Database connection failed: " . $conn_error);
+}
+
+/****************** API Setup ******************/
+
+// Gets the base for the API interaction url - (Ref 2)
+$baseCurl = curl_init();
+
+curl_setopt_array($baseCurl, [
+  CURLOPT_URL => "https://api.themoviedb.org/3/configuration",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "GET",
+  CURLOPT_HTTPHEADER => [
+    "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MTYxN2M4ZjI0ZGI5Nzc4ZWQ4YjcwYmUzNzE1NmQ1ZiIsIm5iZiI6MTc2NDg5MDQwNS43NzYsInN1YiI6IjY5MzIxNzI1Mzk4MTk0NTExOTM2ZTFjZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GF1p4OZ1C2ZoHRSo3g9GKlh3rHozkjQH5u1ou3KhldY",
+  ],
+]);
+
+$baseResponse = curl_exec($baseCurl);
+$baseErr = curl_error($baseCurl);
+
+curl_close($baseCurl);
+
+if ($baseErr) {
+    echo "cURL Error #:" . $baseErr;
+} else {
+    $baseInfo = json_decode($baseResponse, true);
+    $baseUrl = $baseInfo['images']['secure_base_url'] . "w185"; // Poster size is hardcoded here
 }
 
 
@@ -45,8 +76,6 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['submitMovieReview']
             foreach($genres as $genre) {
                 $genreList .= $genre . ','; // Genres will be saved as a list deliminated by a comma: (comedy,action,drama,)
             }
-        } else {
-            echo "You must select at least one genre!"; // Replace this with proper error handling
         }
 
         // Build and execute the SQL INSERT statment
@@ -85,8 +114,6 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['submitShowReview'])
             foreach($genres as $genre) {
                 $genreList .= $genre . ','; // Genres will be saved as a list deliminated by a comma: (comedy,action,drama,)
             }
-        } else {
-            echo "You must select at least one genre!"; // Replace this with proper error handling
         }
 
         // Build and execute the SQL INSERT statment
@@ -108,8 +135,6 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['submitShowReview'])
 }
 
 
-
-
 //***** Read *****//
 
 // Search Bar
@@ -126,7 +151,7 @@ if (isset($_GET['search'])) {
         echo "<h1>Reviews matching \"" . $searchTitle . "\"</h1>";
     }
 
-    // Search for movies first --------- (There is probably a better way to do this in one query but I had issues trying)
+    // Search for movies first
     $stmt = $conn->prepare(
         "SELECT * FROM movieReviews 
         WHERE movieTitle LIKE ?");
@@ -136,9 +161,54 @@ if (isset($_GET['search'])) {
     $result = $stmt->get_result();
 
     echo "<h2>Movies</h2>";
+
+    // Outputs data for each movie review found
     while ($row = $result->fetch_assoc()) {
-        echo "<h3>" . $row['movieTitle'] . "</h3>" .
-        "<br>Reviewed by: " . $row['authorUsername'] .
+        echo "<h3>" . $row['movieTitle'] . "</h3>";
+
+        $urlTitle = str_replace(" ", "+", $row['movieTitle']); // Replaces spaces in the title with "+" for the url
+
+        // API Request url for movie poster file path
+        $endpoint = "https://api.themoviedb.org/3/search/movie";
+        $query = "query=" . $urlTitle . "&include_adult=true&language=en-US&primary_release_year=" . $row['releaseYear'] . "&page=1";
+        $url = $endpoint . "?" . $query;
+
+        // cURL from TMDB API documentation - (Ref 2)
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => [
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MTYxN2M4ZjI0ZGI5Nzc4ZWQ4YjcwYmUzNzE1NmQ1ZiIsIm5iZiI6MTc2NDg5MDQwNS43NzYsInN1YiI6IjY5MzIxNzI1Mzk4MTk0NTExOTM2ZTFjZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GF1p4OZ1C2ZoHRSo3g9GKlh3rHozkjQH5u1ou3KhldY",
+            "accept: application/json"
+        ],
+        ]);
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            $fullUrl = "";
+            echo "Error getting Image url<br>";
+            echo "cURL Error #:" . $err;
+        } else {
+            $info = json_decode($response, true);
+            $posterPath = $info['results'][0]['poster_path'];
+            $fullUrl = $baseUrl . $posterPath;
+            echo "<img src=\"" . $fullUrl . "\" alt=\"Movie poster for " . $row['movieTitle'] . "\">"; // Image is displayed
+        }
+
+        ///////////////////////////////////////////
+
+        echo "<br>Reviewed by: " . $row['authorUsername'] .
         "<br>Released: " . $row['releaseYear'] .
         "<br>Genres: " . $row['genres'] .
         "<br>Rating: " . $row['starRating'] . "/5 Stars" .
@@ -156,9 +226,85 @@ if (isset($_GET['search'])) {
     $result2 = $stmt2->get_result();
 
     echo "<h2>TV Shows</h2>";
+
+    // Outputs data for each show review found
     while ($row = $result2->fetch_assoc()) {
-        echo "<h3>" . $row['showTitle'] . " (Season: " . $row['season'] . ")</h3>" .
-        "<br>Reviewed by: " . $row['authorUsername'] .
+        echo "<h3>" . $row['showTitle'] . " (Season: " . $row['season'] . ")</h3>";
+
+        //////// API Request for show ID (Needed to get correct season image) ////////
+        $urlTitle = str_replace(" ", "+", $row['showTitle']); // Replaces spaces in the title with "+" for the url
+        $endpoint = "https://api.themoviedb.org/3/search/tv";
+        $query = "query=" . $urlTitle . "&include_adult=true&language=en-US&page=1";
+        $url = $endpoint . "?" . $query;
+
+        // cURL from TMDB API documentation - (Ref 2)
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => [
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MTYxN2M4ZjI0ZGI5Nzc4ZWQ4YjcwYmUzNzE1NmQ1ZiIsIm5iZiI6MTc2NDg5MDQwNS43NzYsInN1YiI6IjY5MzIxNzI1Mzk4MTk0NTExOTM2ZTFjZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GF1p4OZ1C2ZoHRSo3g9GKlh3rHozkjQH5u1ou3KhldY",
+            "accept: application/json"
+        ],
+        ]);
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            echo "Error getting ID<br>";
+            echo "cURL Error #:" . $err;
+        } else {
+            $info = json_decode($response, true);
+            $showId = $info['results'][0]['id'];
+        }
+
+
+        //////// API Request for show poster ////////
+        $url = "https://api.themoviedb.org/3/tv/" . $showId . "/season/" . $row['season'] . "/images";
+
+        // cURL from TMDB API documentation - (Ref 2)
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => [
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MTYxN2M4ZjI0ZGI5Nzc4ZWQ4YjcwYmUzNzE1NmQ1ZiIsIm5iZiI6MTc2NDg5MDQwNS43NzYsInN1YiI6IjY5MzIxNzI1Mzk4MTk0NTExOTM2ZTFjZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GF1p4OZ1C2ZoHRSo3g9GKlh3rHozkjQH5u1ou3KhldY",
+            "accept: application/json"
+        ],
+        ]);
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            $fullUrl = "";
+            echo "Error getting show poster<br>";
+            echo "cURL Error #:" . $err;
+        } else {
+            $info = json_decode($response, true);
+            $posterPath = $info['posters'][0]['file_path'];
+            $fullUrl = $baseUrl . $posterPath;
+            echo "<img src=\"" . $fullUrl . "\" alt=\"TV poster for " . $row['showTitle'] . "\">"; // Image is displayed
+        }
+
+        echo "<br>Reviewed by: " . $row['authorUsername'] .
         "<br>Released: " . $row['releaseYear'] .
         "<br>Genres: " . $row['genres'] .
         "<br>Rating: " . $row['starRating'] . "/5 Stars" .
