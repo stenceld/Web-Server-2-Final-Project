@@ -1,0 +1,345 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: black;
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+main {
+    flex: 1;
+}
+
+/* Header & Navigation */
+header {
+    background-color: white;
+    border-bottom: 1px solid lightgray;
+    padding: 0 40px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    gap: 40px;
+}
+
+nav h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+nav ul {
+    display: flex;
+    gap: 24px;
+}
+
+nav ul li a {
+    font-size: 0.875rem;
+    color: gray;
+}
+
+nav ul li a:hover {
+    color: black;
+}
+
+#login {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#login .welcome {
+    font-size: 0.875rem;
+    color: gray;
+}
+
+#login button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+#login button:hover {
+    background-color: dimgray;
+}
+
+/* Title Header Section */
+#titleHeader {
+    background-color: darkslategray;
+    color: white;
+    padding: 60px 40px;
+}
+
+#titleHeader h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+#titleHeader p {
+    color: silver;
+}
+
+#titleHeader .meta {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+#titleHeader .type {
+    background-color: gold;
+    color: black;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+#titleHeader .rating {
+    font-size: 1.25rem;
+    color: gold;
+    font-weight: 600;
+}
+
+#titleHeader .count {
+    color: silver;
+    font-size: 0.875rem;
+}
+
+/* Success and Error Messages */
+.success-message {
+    background-color: honeydew;
+    color: green;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 20px 40px;
+    font-size: 0.875rem;
+    text-align: center;
+    border: 1px solid lightgreen;
+}
+
+.error-message {
+    background-color: mistyrose;
+    color: crimson;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 20px 40px;
+    font-size: 0.875rem;
+    text-align: center;
+    border: 1px solid lightcoral;
+}
+
+/* Reviews List Section */
+#reviewsList {
+    padding: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.review-card {
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.review-card:hover {
+    box-shadow: 0 4px 12px lightgray;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.username {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.season {
+    font-size: 0.75rem;
+    color: gray;
+    background-color: whitesmoke;
+    padding: 2px 8px;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+.rating-badge {
+    background-color: black;
+    color: gold;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.review-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    font-size: 0.8rem;
+    color: gray;
+}
+
+.genres {
+    background-color: whitesmoke;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.review-text {
+    font-size: 0.95rem;
+    color: dimgray;
+    line-height: 1.7;
+}
+
+/* No Reviews State */
+.no-reviews {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: whitesmoke;
+    border-radius: 12px;
+}
+
+.no-reviews h3 {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+}
+
+.no-reviews p {
+    color: gray;
+    margin-bottom: 20px;
+}
+
+/* Write Review Button */
+.write-review-btn {
+    display: inline-block;
+    background-color: gold;
+    color: black;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.write-review-btn:hover {
+    background-color: yellow;
+}
+
+#writeReview {
+    text-align: center;
+    padding: 20px 40px 40px;
+}
+
+/* Footer */
+footer {
+    background-color: whitesmoke;
+    padding: 60px 40px 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    border-top: 1px solid lightgray;
+}
+
+footer section h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+#About p {
+    font-size: 0.875rem;
+    color: gray;
+}
+
+footer section ul li {
+    margin-bottom: 10px;
+}
+
+footer section ul li a {
+    font-size: 0.875rem;
+    color: gray;
+}
+
+footer section ul li a:hover {
+    color: black;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 16px 0;
+        gap: 16px;
+    }
+
+    #titleHeader h1 {
+        font-size: 1.75rem;
+    }
+
+    #titleHeader .meta {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    #reviewsList {
+        padding: 20px;
+    }
+
+    footer {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    header, #titleHeader, footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .review-header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    footer {
+        grid-template-columns: 1fr;
+    }
+}

@@ -63,6 +63,14 @@ nav ul li a:hover {
 
 #login {
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#login .welcome {
+    font-size: 0.875rem;
+    color: gray;
 }
 
 #login button {
@@ -137,6 +145,46 @@ nav ul li a:hover {
 
 #Login\ Form button:hover {
     background-color: yellow;
+}
+
+/* Success and Error Messages */
+.error-message {
+    background-color: mistyrose;
+    color: crimson;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.875rem;
+    text-align: center;
+    border: 1px solid lightcoral;
+}
+
+.success-message {
+    background-color: honeydew;
+    color: green;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.875rem;
+    text-align: center;
+    border: 1px solid lightgreen;
+}
+
+/* Signup Link */
+.signup-link {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 0.875rem;
+    color: gray;
+}
+
+.signup-link a {
+    color: black;
+    font-weight: 600;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
 }
 
 /* Footer */

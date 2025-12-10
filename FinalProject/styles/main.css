@@ -54,37 +54,17 @@ nav ul li a:hover {
     color: black;
 }
 
-header form {
+/* Login Section in Nav */
+#login {
+    margin-left: auto;
     display: flex;
     align-items: center;
-    margin-left: auto;
+    gap: 12px;
 }
 
-header form label {
-    display: none;
-}
-
-header form input[type="text"] {
-    padding: 8px 16px;
-    border: 1px solid lightgray;
-    border-radius: 6px;
+#login .welcome {
     font-size: 0.875rem;
-    width: 200px;
-    background-color: whitesmoke;
-}
-
-header form input[type="text"]:focus {
-    outline: none;
-    border-color: darkgray;
-    background-color: white;
-}
-
-header form input[type="submit"] {
-    display: none;
-}
-
-#login {
-    margin-left: 16px;
+    color: gray;
 }
 
 #login button {
@@ -101,8 +81,74 @@ header form input[type="submit"] {
     background-color: dimgray;
 }
 
+/* Search Form in Header */
+header form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0;
+    border-top: 1px solid lightgray;
+}
+
+header form label {
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+header form input[type="text"] {
+    padding: 8px 16px;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    width: 250px;
+    background-color: whitesmoke;
+}
+
+header form input[type="text"]:focus {
+    outline: none;
+    border-color: darkgray;
+    background-color: white;
+}
+
+header form input[type="submit"] {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+header form input[type="submit"]:hover {
+    background-color: dimgray;
+}
+
+/* Success and Error Messages */
+.error-message {
+    background-color: mistyrose;
+    color: crimson;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 20px 40px;
+    font-size: 0.875rem;
+    text-align: center;
+    border: 1px solid lightcoral;
+}
+
+.success-message {
+    background-color: honeydew;
+    color: green;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 20px 40px;
+    font-size: 0.875rem;
+    text-align: center;
+    border: 1px solid lightgreen;
+}
+
 /* Featured Movie Section */
-#Featured\ Movie {
+#FeaturedMovie {
     background-color: darkslategray;
     color: white;
     padding: 80px 40px;
@@ -112,21 +158,21 @@ header form input[type="submit"] {
     justify-content: center;
 }
 
-#Featured\ Movie h2 {
+#FeaturedMovie h2 {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 16px;
     max-width: 500px;
 }
 
-#Featured\ Movie p {
+#FeaturedMovie p {
     font-size: 1rem;
     color: silver;
     max-width: 450px;
     margin-bottom: 24px;
 }
 
-#Featured\ Movie button {
+#FeaturedMovie button {
     background-color: gold;
     color: black;
     border: none;
@@ -138,40 +184,40 @@ header form input[type="submit"] {
     width: fit-content;
 }
 
-#Featured\ Movie button:hover {
+#FeaturedMovie button:hover {
     background-color: yellow;
 }
 
 /* Popular Movies Section */
-#Popular\ Movies {
+#PopularMovies {
     padding: 60px 40px;
 }
 
-#Popular\ Movies h2 {
+#PopularMovies h2 {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 24px;
 }
 
-#Popular\ Movies ul {
+#PopularMovies ul {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 24px;
 }
 
-#Popular\ Movies li {
+#PopularMovies li {
     cursor: pointer;
 }
 
-#Popular\ Movies li:hover {
+#PopularMovies li:hover {
     transform: translateY(-4px);
 }
 
-#Popular\ Movies figure {
+#PopularMovies figure {
     margin: 0;
 }
 
-#Popular\ Movies img {
+#PopularMovies img {
     width: 100%;
     height: 260px;
     object-fit: cover;
@@ -179,48 +225,48 @@ header form input[type="submit"] {
     background-color: slategray;
 }
 
-#Popular\ Movies figcaption {
+#PopularMovies figcaption {
     margin-top: 12px;
     font-size: 0.9rem;
     font-weight: 600;
 }
 
 /* Recent Reviews Section */
-#Recent\ Reviews {
+#recentReviews {
     padding: 60px 40px;
     background-color: whitesmoke;
 }
 
-#Recent\ Reviews h2 {
+#recentReviews h2 {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 24px;
 }
 
-#Recent\ Reviews article {
+#recentReviews article {
     background-color: white;
     border-radius: 12px;
     padding: 24px;
     margin-bottom: 20px;
 }
 
-#Recent\ Reviews article:hover {
+#recentReviews article:hover {
     box-shadow: 0 4px 12px lightgray;
 }
 
-#Recent\ Reviews h3 {
+#recentReviews h3 {
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 8px;
 }
 
-#Recent\ Reviews p {
+#recentReviews p {
     font-size: 0.9rem;
     color: gray;
     margin-bottom: 12px;
 }
 
-#Recent\ Reviews time {
+#recentReviews time {
     font-size: 0.8rem;
     color: darkgray;
 }
@@ -257,4 +303,45 @@ footer section ul li a {
 
 footer section ul li a:hover {
     color: black;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 16px 0;
+        gap: 16px;
+    }
+
+    #FeaturedMovie h2 {
+        font-size: 2rem;
+    }
+
+    #PopularMovies ul {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    footer {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    header, #FeaturedMovie, #PopularMovies, #recentReviews, footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .error-message, .success-message {
+        margin: 20px;
+    }
+
+    #PopularMovies ul {
+        grid-template-columns: 1fr;
+    }
+
+    footer {
+        grid-template-columns: 1fr;
+    }
 }

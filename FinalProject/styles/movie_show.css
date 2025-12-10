@@ -63,6 +63,14 @@ nav ul li a:hover {
 
 #login {
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#login .welcome {
+    font-size: 0.875rem;
+    color: gray;
 }
 
 #login button {
@@ -103,6 +111,35 @@ nav ul li a:hover {
     margin-bottom: 32px;
 }
 
+/* Success and Error Messages */
+.error-message {
+    background-color: mistyrose;
+    color: crimson;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.875rem;
+    text-align: center;
+    border: 1px solid lightcoral;
+}
+
+.error-message a {
+    color: crimson;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.success-message {
+    background-color: honeydew;
+    color: green;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.875rem;
+    text-align: center;
+    border: 1px solid lightgreen;
+}
+
 #Review\ Form form {
     display: flex;
     flex-direction: column;
@@ -140,6 +177,12 @@ nav ul li a:hover {
     outline: none;
     border-color: darkgray;
     background-color: white;
+}
+
+#Review\ Form input[type="text"][readonly] {
+    background-color: gainsboro;
+    color: dimgray;
+    cursor: not-allowed;
 }
 
 #Review\ Form select {
@@ -208,6 +251,12 @@ nav ul li a:hover {
 
 #Review\ Form button[type="submit"]:hover {
     background-color: yellow;
+}
+
+#Review\ Form button[type="submit"]:disabled {
+    background-color: gainsboro;
+    color: gray;
+    cursor: not-allowed;
 }
 
 /* Footer */

@@ -1,28 +1,16 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/movie_show.css">
-    <title>Movie/Show - CineReview</title>
+    <link rel="stylesheet" href="../styles/movie_show.css">
+    <title>Show - CineReview</title>
 </head>
 
 <body>
 
-    <header>
-        <nav>
-            <h1>CineReview</h1>
-            <ul>
-                <li><a href="FinalProject/index.html">Home</a></li>
-                <li><a href="#">Movies</a></li>
-                <li><a href="#">TV Shows</a></li>
-                <li><a href="#">Top Rated</a></li>
-            </ul>
-            <section id="login">
-                <button>Login</button>
-            </section>
-        </nav>
-    </header>
+    <?php include '../includes/header.php'; ?>
 
     <main>
 
@@ -31,15 +19,22 @@
         </section>
 
         <section id="Review Form">
-            <h2>Submit a Review</h2>
-            <form>
+            <h2>Submit a Show Review</h2>
+
+            <?php if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true): ?>
+                <p class="error-message">You must be <a href="login.php">logged in</a> to submit a review.</p>
+            <?php endif; ?>
+
+            <form method="post" action="../process.php">
                 <div>
                     <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
+                    <input type="text" id="username" name="username" 
+                           value="<?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : ''; ?>" 
+                           readonly required>
                 </div>
 
                 <div>
-                    <label for="show-name">Show/Movie Name:</label>
+                    <label for="show-name">Show Name:</label>
                     <input type="text" id="show-name" name="show-name" required>
                 </div>
 
@@ -57,29 +52,34 @@
                         <option value="3">Season 3</option>
                         <option value="4">Season 4</option>
                         <option value="5">Season 5</option>
+                        <option value="6">Season 6</option>
+                        <option value="7">Season 7</option>
+                        <option value="8">Season 8</option>
+                        <option value="9">Season 9</option>
+                        <option value="10">Season 10</option>
                     </select>
                 </div>
 
                 <div>
                     <legend>Genre:</legend>
                     <div>
-                        <input type="checkbox" id="action" name="genre" value="action">
+                        <input type="checkbox" id="action" name="genre[]" value="action">
                         <label for="action">Action</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="drama" name="genre" value="drama">
+                        <input type="checkbox" id="drama" name="genre[]" value="drama">
                         <label for="drama">Drama</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="comedy" name="genre" value="comedy">
+                        <input type="checkbox" id="comedy" name="genre[]" value="comedy">
                         <label for="comedy">Comedy</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="thriller" name="genre" value="thriller">
+                        <input type="checkbox" id="thriller" name="genre[]" value="thriller">
                         <label for="thriller">Thriller</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="sci-fi" name="genre" value="sci-fi">
+                        <input type="checkbox" id="sci-fi" name="genre[]" value="sci-fi">
                         <label for="sci-fi">Sci-Fi</label>
                     </div>
                 </div>
@@ -113,46 +113,16 @@
                     <textarea id="review-text" name="review-text" rows="8" cols="50" required></textarea>
                 </div>
 
-                <button type="submit">Submit Review</button>
+                <button type="submit" id="submitShowReview" name="submitShowReview"
+                        <?php echo (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) ? 'disabled' : ''; ?>>
+                    Submit Review
+                </button>
             </form>
         </section>
 
     </main>
 
-    <footer>
-        <section id="About">
-            <h4>CineReview</h4>
-            <p>Your trusted source for honest movie reviews.</p>
-        </section>
-
-        <section id="Footer Row 1">
-            <h4>Movies</h4>
-            <ul>
-                <li><a href="#">Now Playing</a></li>
-                <li><a href="#">Coming Soon</a></li>
-                <li><a href="#">Top Rated</a></li>
-            </ul>
-        </section>
-
-        <section id= "Footer Row 2 ">
-            <h4>Community</h4>
-            <ul>
-                <li><a href="#">Reviews</a></li>
-                <li><a href="#">Discussions</a></li>
-                <li><a href="#">Write a Review</a></li>
-            </ul>
-        </section>
-
-        <section id="Footer Row 3">
-            <h4>Company</h4>
-            <ul>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-            </ul>
-        </section>
-    </footer>
+    <?php include '../includes/footer.php'; ?>
 
 </body>
-
 </html>
