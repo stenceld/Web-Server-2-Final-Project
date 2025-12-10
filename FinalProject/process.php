@@ -139,6 +139,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['submitShowReview'])
 
 // Search Bar
 if (isset($_GET['search'])) {
+    
     // Get title user searched for
     $searchTitle = htmlspecialchars($_GET['searchBar']);
     $queryTitle = "%" . $searchTitle . "%"; // Sets up format for query: %title%
@@ -159,6 +160,15 @@ if (isset($_GET['search'])) {
     $stmt->bind_param("s", $queryTitle);
     $stmt->execute();
     $result = $stmt->get_result();
+
+    // This commented block below was for outputting through json - meant to be passed through JS to update the html
+    
+    //$resultArray = $result->fetch_all(MYSQLI_ASSOC);
+    //header('Content-Type: application/json'); // For sending json to client
+    //echo json_encode($resultArray);
+    //echo "<h1>Movies encoded json result</h1><p>" . $moviesJsonResult . "</p>";
+    //exit; // Exiting here. Nothing below executes for now!
+
 
     echo "<h2>Movies</h2>";
 
@@ -211,7 +221,7 @@ if (isset($_GET['search'])) {
         echo "<br>Reviewed by: " . $row['authorUsername'] .
         "<br>Released: " . $row['releaseYear'] .
         "<br>Genres: " . $row['genres'] .
-        "<br>Rating: " . $row['starRating'] . "/5 Stars" .
+        "<br>Rating: " . $row['starRating'] . "/5 stars" .
         "<br>Review:<br>" . $row['reviewText'] .
         "<br><br>------------------------------------<br><br>";
     }
@@ -307,14 +317,139 @@ if (isset($_GET['search'])) {
         echo "<br>Reviewed by: " . $row['authorUsername'] .
         "<br>Released: " . $row['releaseYear'] .
         "<br>Genres: " . $row['genres'] .
-        "<br>Rating: " . $row['starRating'] . "/5 Stars" .
+        "<br>Rating: " . $row['starRating'] . "/5 stars" .
         "<br>Review:<br>" . $row['reviewText'] .
         "<br><br>------------------------------------<br><br>";
     }
 }
 
-//***** Update *****//
+//***** Update *****// --- NOT TESTED YET - There is currently no 'update(Movie/Show)Review' button
 
-//***** Delete *****//
+// Update Movie Review
+if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['updateMovieReview']))) {
+    try {
+        // Get and sanitize inputs from form
+        $username = htmlspecialchars($_POST['username']);
+        $movieName = htmlspecialchars($_POST['movieName']);
+        $releaseYear = htmlspecialchars($_POST['releaseYear']);
+        $genres = (isset($_POST['genre'])) ? $_POST['genre'] : array(); // Help from geeksforgeeks (Ref 1)
+        $rating = $_POST['rating'];
+        $reviewText = htmlspecialchars($_POST['review-text']);
 
+        // Genres built as string
+        $genreList = "";
+        if (count($genres) > 0) {
+            foreach($genres as $genre) {
+                $genreList .= $genre . ','; // Genres will be saved as a list deliminated by a comma: (comedy,action,drama,)
+            }
+        }
+
+        // Build and execute the SQL UPDATE statment
+        $stmt = $conn->prepare(
+            "UPDATE movieReviews
+            SET genres = ?, starRating = ?, reviewText = ?
+            WHERE authorUsername = ?, movieTitle = ?, releaseYear = ?");
+
+        $stmt->bind_param("sdsssi", $genres, $rating, $reviewText, $username, $movieName, $releaseYear);
+        $stmt->execute();
+
+        header("Location: index.html"); // Replace with redirect to user's reviews after account are finished
+        exit;
+
+        } catch (Exception $error) {
+            echo "Error: " . $error->getMessage();
+        }
+}
+
+// Update Show Review
+if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['updateShowReview']))) {
+    try {
+        // Get and sanitize inputs from form
+        $username = htmlspecialchars($_POST['username']);
+        $showName = htmlspecialchars($_POST['show-name']);
+        $releaseYear = htmlspecialchars($_POST['release-year']);
+        $season = htmlspecialchars($_POST['season']);
+        $genres = (isset($_POST['genre'])) ? $_POST['genre'] : array(); // Help from geeksforgeeks (Ref 1)
+        $rating = $_POST['rating'];
+        $reviewText = htmlspecialchars($_POST['review-text']);
+
+        // Genres built as string
+        $genreList = "";
+        if (count($genres) > 0) {
+            foreach($genres as $genre) {
+                $genreList .= $genre . ','; // Genres will be saved as a list deliminated by a comma: (comedy,action,drama,)
+            }
+        }
+
+        // Build and execute the SQL INSERT statment
+        $stmt = $conn->prepare(
+            "UPDATE tvShowReviews
+            SET genres = ?, starRating = ?, reviewText = ?
+            WHERE authorUsername = ?, showTitle = ?, season = ?");
+
+        $stmt->bind_param("sdsssi", $genres, $rating, $reviewText, $username, $showName, $season);
+        $stmt->execute();
+
+        header("Location: index.html"); // Replace with redirect to user's reviews after account are finished
+        exit;
+
+        } catch (Exception $error) {
+            echo "Error: " . $error->getMessage();
+        }
+}
+
+
+//***** Delete *****// --- NOT TESTED YET - There is currently no 'delete(Movie/Show)Review' button
+
+// Delete Movie Review
+if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['deleteMovieReview']))) {
+    try {
+        // Get and sanitize inputs from form
+        $username = htmlspecialchars($_POST['username']);
+        $movieName = htmlspecialchars($_POST['movieName']);
+        $releaseYear = htmlspecialchars($_POST['releaseYear']);
+
+        // Build and execute the SQL DELETE statment
+        $stmt = $conn->prepare(
+            "DELETE FROM movieReviews
+            WHERE authorUsername = ?
+            AND movieName = ?
+            AND releseYear = ?");
+
+        $stmt->bind_param("ssi", $username, $movieName, $releaseYear);
+        $stmt->execute();
+
+        header("Location: index.html"); // Replace with redirect to user's reviews after account are finished
+        exit;
+
+        } catch (Exception $error) {
+            echo "Error: " . $error->getMessage();
+        }
+    }
+
+// Delete TV Show Review
+if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['deleteShowReview']))) {
+    try {
+        // Get and sanitize inputs from form
+        $username = htmlspecialchars($_POST['username']);
+        $showName = htmlspecialchars($_POST['show-name']);
+        $season = htmlspecialchars($_POST['season']);
+
+        // Build and execute the SQL DELETE statment
+        $stmt = $conn->prepare(
+            "DELETE FROM tvShowReviews
+            WHERE authorUsername = ?
+            AND showTitle = ?
+            AND season = ?");
+
+        $stmt->bind_param("ssi", $username, $showName, $season);
+        $stmt->execute();
+
+        header("Location: index.html"); // Replace with redirect to user's reviews after account are finished
+        exit;
+
+        } catch (Exception $error) {
+            echo "Error: " . $error->getMessage();
+        }
+    }
 ?>
