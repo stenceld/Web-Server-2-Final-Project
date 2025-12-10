@@ -12,13 +12,74 @@ if ($conn->connect_error) {
     die("Database connection failed: " . $conn_error);
 }
 
+// Going to create a session for user login/signup
+// Can also use cookies but I have a better understanding of sessions
+session_start();
+
 
 /****************** Login/Signup ******************/
 
 // Log in existing user
+if (isset($_POST['login'])) {
+    $loginUsername = htmlspecialchars($_POST['username']);
+    $loginPassword = $_POST['password'];
+
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $loginUsername);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+        
+        // Verify password
+        if (password_verify($loginPassword, $user['password'])) {
+            // Set session variables
+            $_SESSION['logged_in'] = true;
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            
+            header("Location: index.html");
+            exit();
+        } else {
+            header("Location: login.html?error=invalid_credentials");
+            exit();
+        }
+    } else {
+        header("Location: login.html?error=invalid_credentials");
+        exit();
+    }
+}
+
+// Sign up new user
+
+// Check if passwords match
+
+// Check if username is already taken
+
+// Check if email is already registered
+
+// Hash Password
+
+// Insert new user into database
+
+// Log out user
 
 
+/****************** Helper Functions for login/Signup ******************/
 
+function isLoggedIn() {
+    return isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+}
+
+function getCurrentUsername() {
+    return isset($_SESSION['username']) ? $_SESSION['username'] : null;
+}
+
+function getCurrentUserId() {
+    return isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+
+}
 
 /****************** Database Actions ******************/
 
