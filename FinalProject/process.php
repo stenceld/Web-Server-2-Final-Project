@@ -154,8 +154,70 @@ function getCurrentUsername() {
     return isset($_SESSION['username']) ? $_SESSION['username'] : null;
 }
 
+// Print header
+function printHeader() {
+    echo "<body>
+        <head>
+            <link rel=\"stylesheet\" href=\"styles/main.css\">
+        </head>
+        
+        <header>
+        <nav>
+            <h1>CineReview</h1>
+            <ul>
+                <li><a href=\"#\">Home</a></li>
+                <li><a href=\"#\">Movies</a></li>
+                <li><a href=\"#\">TV Shows</a></li>
+                <li><a href=\"#\">Top Rated</a></li>
+                <li><a href=\"/html/movie_review.html\">Review a Movie</a></li>
+                <li><a href=\"/html/show_review.html\">Review a Show</a></li>
+            </ul>
+            <section id=\"login\">
+                <a href=\"/html/login.html\">
+                    <button>Login</button>
+                </a>
+            </section>
+        </nav>
+        </header>";
+}
 
+// Print footer
+function printFooter() {
+    echo "<footer>
+        <section id=\"About\">
+            <h4>CineReview</h4>
+            <p>Your trusted source for honest movie reviews.</p>
+        </section>
 
+        <section id=\"Footer Row 1\">
+            <h4>Movies</h4>
+            <ul>
+                <li><a href=\"#\">Now Playing</a></li>
+                <li><a href=\"#\">Coming Soon</a></li>
+                <li><a href=\"#\">Top Rated</a></li>
+            </ul>
+        </section>
+
+        <section id= \"Footer Row 2 \">
+            <h4>Community</h4>
+            <ul>
+                <li><a href=\"#\">Reviews</a></li>
+                <li><a href=\"#\">Discussions</a></li>
+                <li><a href=\"#\">Write a Review</a></li>
+            </ul>
+        </section>
+
+        <section id=\"Footer Row 3\">
+            <h4>Company</h4>
+            <ul>
+                <li><a href=\"#\">About Us</a></li>
+                <li><a href=\"#\">Contact</a></li>
+                <li><a href=\"#\">Privacy Policy</a></li>
+            </ul>
+        </section>
+    </footer>
+    </body>";
+}
 
 /****************** Database Actions ******************/
 
@@ -172,6 +234,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['submitMovieReview']
     try {
         // Get username from session instead of form
         $username = getCurrentUsername();
+
+        // Get and sanitize inputs from form
         $movieName = htmlspecialchars($_POST['movieName']);
         $releaseYear = htmlspecialchars($_POST['releaseYear']);
         $genres = (isset($_POST['genre'])) ? $_POST['genre'] : array(); // Help from geeksforgeeks (Ref 1)
@@ -215,6 +279,8 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['submitShowReview'])
     try {
         // Get username from session instead of form
         $username = getCurrentUsername();
+
+        // Get and sanitize inputs from form
         $showName = htmlspecialchars($_POST['show-name']);
         $releaseYear = htmlspecialchars($_POST['release-year']);
         $season = htmlspecialchars($_POST['season']);
@@ -254,29 +320,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['submitShowReview'])
 // Search Bar
 if (isset($_GET['search'])) {
     // Print header
-    echo "<body>
-        <head>
-            <link rel=\"stylesheet\" href=\"styles/main.css\">
-        </head>
-        
-        <header>
-        <nav>
-            <h1>CineReview</h1>
-            <ul>
-                <li><a href=\"/index.php\">Home</a></li>
-                <li><a href=\"#\">Movies</a></li>
-                <li><a href=\"#\">TV Shows</a></li>
-                <li><a href=\"#\">Top Rated</a></li>
-                <li><a href=\"/html/movie_review.php\">Review a Movie</a></li>
-                <li><a href=\"/html/show_review.php\">Review a Show</a></li>
-            </ul>
-            <section id=\"login\">
-                <a href=\"/html/login.php\">
-                    <button>Login</button>
-                </a>
-            </section>
-        </nav>
-        </header>";
+    printHeader();
     
     // Get title user searched for
     $searchTitle = htmlspecialchars($_GET['searchBar']);
@@ -285,9 +329,9 @@ if (isset($_GET['search'])) {
     // If no search value was entered or the field was left blank, all reviews are shown
     if (($searchTitle == "Enter a title") || ($searchTitle == "")) {
         $queryTitle = "%%";
-        //echo "<h1>All Reviews</h1>";
+        echo "<h1>All Reviews</h1>";
     } else {
-        //echo "<h1>Reviews matching \"" . $searchTitle . "\"</h1>";
+        echo "<h1>Reviews matching \"" . $searchTitle . "\"</h1>";
     }
 
     // Search for movies first
@@ -298,15 +342,6 @@ if (isset($_GET['search'])) {
     $stmt->bind_param("s", $queryTitle);
     $stmt->execute();
     $result = $stmt->get_result();
-
-    //$resultArray = $result->fetch_all(MYSQLI_ASSOC);
-
-    //header('Content-Type: application/json'); // For sending json to client
-    //echo json_encode($resultArray); ////////////////////////////////////////////
-    //echo "<h1>Movies encoded json result</h1><p>" . $moviesJsonResult . "</p>";
-    
-    //exit; // Exiting here. Nothing below executes for now!
-
 
     echo "<h2>Movies</h2>";
 
@@ -460,44 +495,135 @@ if (isset($_GET['search'])) {
         "<br><br>------------------------------------<br><br>";
     }
     // Print footer
-    echo "<footer>
-        <section id=\"About\">
-            <h4>CineReview</h4>
-            <p>Your trusted source for honest movie reviews.</p>
-        </section>
-
-        <section id=\"Footer Row 1\">
-            <h4>Movies</h4>
-            <ul>
-                <li><a href=\"#\">Now Playing</a></li>
-                <li><a href=\"#\">Coming Soon</a></li>
-                <li><a href=\"#\">Top Rated</a></li>
-            </ul>
-        </section>
-
-        <section id= \"Footer Row 2 \">
-            <h4>Community</h4>
-            <ul>
-                <li><a href=\"#\">Reviews</a></li>
-                <li><a href=\"#\">Discussions</a></li>
-                <li><a href=\"#\">Write a Review</a></li>
-            </ul>
-        </section>
-
-        <section id=\"Footer Row 3\">
-            <h4>Company</h4>
-            <ul>
-                <li><a href=\"#\">About Us</a></li>
-                <li><a href=\"#\">Contact</a></li>
-                <li><a href=\"#\">Privacy Policy</a></li>
-            </ul>
-        </section>
-    </footer>
-    </body>";
+    printFooter();
 }
 
-//***** Update *****//
+//***** Update *****// --- NOT TESTED YET - There is currently no 'update(Movie/Show)Review' button
 
-//***** Delete *****//
+// Update Movie Review
+if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['updateMovieReview']))) {
+    try {
+        // Get and sanitize inputs from form
+        $username = htmlspecialchars($_POST['username']);
+        $movieName = htmlspecialchars($_POST['movieName']);
+        $releaseYear = htmlspecialchars($_POST['releaseYear']);
+        $genres = (isset($_POST['genre'])) ? $_POST['genre'] : array(); // Help from geeksforgeeks (Ref 1)
+        $rating = $_POST['rating'];
+        $reviewText = htmlspecialchars($_POST['review-text']);
 
+        // Genres built as string
+        $genreList = "";
+        if (count($genres) > 0) {
+            foreach($genres as $genre) {
+                $genreList .= $genre . ','; // Genres will be saved as a list deliminated by a comma: (comedy,action,drama,)
+            }
+        }
+
+        // Build and execute the SQL UPDATE statment
+        $stmt = $conn->prepare(
+            "UPDATE movieReviews
+            SET genres = ?, starRating = ?, reviewText = ?
+            WHERE authorUsername = ?, movieTitle = ?, releaseYear = ?");
+
+        $stmt->bind_param("sdsssi", $genres, $rating, $reviewText, $username, $movieName, $releaseYear);
+        $stmt->execute();
+
+        header("Location: index.html"); // Replace with redirect to user's reviews after account are finished
+        exit;
+
+        } catch (Exception $error) {
+            echo "Error: " . $error->getMessage();
+        }
+}
+
+// Update Show Review
+if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['updateShowReview']))) {
+    try {
+        // Get and sanitize inputs from form
+        $username = htmlspecialchars($_POST['username']);
+        $showName = htmlspecialchars($_POST['show-name']);
+        $releaseYear = htmlspecialchars($_POST['release-year']);
+        $season = htmlspecialchars($_POST['season']);
+        $genres = (isset($_POST['genre'])) ? $_POST['genre'] : array(); // Help from geeksforgeeks (Ref 1)
+        $rating = $_POST['rating'];
+        $reviewText = htmlspecialchars($_POST['review-text']);
+
+        // Genres built as string
+        $genreList = "";
+        if (count($genres) > 0) {
+            foreach($genres as $genre) {
+                $genreList .= $genre . ','; // Genres will be saved as a list deliminated by a comma: (comedy,action,drama,)
+            }
+        }
+
+        // Build and execute the SQL INSERT statment
+        $stmt = $conn->prepare(
+            "UPDATE tvShowReviews
+            SET genres = ?, starRating = ?, reviewText = ?
+            WHERE authorUsername = ?, showTitle = ?, season = ?");
+
+        $stmt->bind_param("sdsssi", $genres, $rating, $reviewText, $username, $showName, $season);
+        $stmt->execute();
+
+        header("Location: index.html"); // Replace with redirect to user's reviews after account are finished
+        exit;
+
+        } catch (Exception $error) {
+            echo "Error: " . $error->getMessage();
+        }
+}
+
+//***** Delete *****// --- NOT TESTED YET - There is currently no 'delete(Movie/Show)Review' button
+
+// Delete Movie Review
+if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['deleteMovieReview']))) {
+    try {
+        // Get and sanitize inputs from form
+        $username = htmlspecialchars($_POST['username']);
+        $movieName = htmlspecialchars($_POST['movieName']);
+        $releaseYear = htmlspecialchars($_POST['releaseYear']);
+
+        // Build and execute the SQL DELETE statment
+        $stmt = $conn->prepare(
+            "DELETE FROM movieReviews
+            WHERE authorUsername = ?
+            AND movieName = ?
+            AND releseYear = ?");
+
+        $stmt->bind_param("ssi", $username, $movieName, $releaseYear);
+        $stmt->execute();
+
+        header("Location: index.html"); // Replace with redirect to user's reviews after account are finished
+        exit;
+
+        } catch (Exception $error) {
+            echo "Error: " . $error->getMessage();
+        }
+    }
+
+// Delete TV Show Review
+if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['deleteShowReview']))) {
+    try {
+        // Get and sanitize inputs from form
+        $username = htmlspecialchars($_POST['username']);
+        $showName = htmlspecialchars($_POST['show-name']);
+        $season = htmlspecialchars($_POST['season']);
+
+        // Build and execute the SQL DELETE statment
+        $stmt = $conn->prepare(
+            "DELETE FROM tvShowReviews
+            WHERE authorUsername = ?
+            AND showTitle = ?
+            AND season = ?");
+
+        $stmt->bind_param("ssi", $username, $showName, $season);
+        $stmt->execute();
+
+        header("Location: index.html"); // Replace with redirect to user's reviews after account are finished
+        exit;
+
+        } catch (Exception $error) {
+            echo "Error: " . $error->getMessage();
+        }
+    }
 ?>
