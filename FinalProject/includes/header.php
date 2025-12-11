@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <nav>
         <h1>CineReview</h1>
         <ul>
-            <li><a href="/index.php">Home</a></li>
+            <li><a href="/index.html">Home</a></li>
             <li><a href="#">Movies</a></li>
             <li><a href="#">TV Shows</a></li>
             <li><a href="#">Top Rated</a></li>

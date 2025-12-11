@@ -8,6 +8,18 @@
 // Start session at the very top
 session_start();
 
+/****************** Session Check for JavaScript ******************/
+
+// Return session status as JSON for the index.html page
+if (isset($_GET['checkSession'])) {
+    header('Content-Type: application/json');
+    echo json_encode([
+        'logged_in' => isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true,
+        'username' => isset($_SESSION['username']) ? $_SESSION['username'] : null
+    ]);
+    exit();
+}
+
 /****************** Database Connection ******************/
 
 $hostname = "localhost";
@@ -104,13 +116,13 @@ if (isset($_POST['login'])) {
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
         
-        // Verify password
+        // Verify password using passwordHash column
         if (password_verify($loginPassword, $user['passwordHash'])) {
             // Set session variables
             $_SESSION['logged_in'] = true;
             $_SESSION['username'] = $user['username'];
             
-            header("Location: /index.php?success=logged_in");
+            header("Location: /index.html?success=logged_in");
             exit();
         } else {
             header("Location: /html/login.php?error=invalid_credentials");
@@ -126,7 +138,7 @@ if (isset($_POST['login'])) {
 if (isset($_GET['logout'])) {
     session_unset();
     session_destroy();
-    header("Location: /index.php?success=logged_out");
+    header("Location: /index.html?success=logged_out");
     exit();
 }
 
@@ -184,7 +196,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['submitMovieReview']
         $stmt->bind_param("ssisds", $username, $movieName, $releaseYear, $genreList, $rating, $reviewText);
         $stmt->execute();
 
-        header("Location: /index.php?success=review_submitted");
+        header("Location: /index.html?success=review_submitted");
         exit;
 
         } catch (Exception $error) {
@@ -228,7 +240,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['submitShowReview'])
         $stmt->bind_param("ssiisds", $username, $showName, $season, $releaseYear, $genreList, $rating, $reviewText);
         $stmt->execute();
 
-        header("Location: /index.php?success=review_submitted");
+        header("Location: /index.html?success=review_submitted");
         exit;
 
         } catch (Exception $error) {
@@ -241,6 +253,30 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['submitShowReview'])
 
 // Search Bar
 if (isset($_GET['search'])) {
+    // Print header
+    echo "<body>
+        <head>
+            <link rel=\"stylesheet\" href=\"styles/main.css\">
+        </head>
+        
+        <header>
+        <nav>
+            <h1>CineReview</h1>
+            <ul>
+                <li><a href=\"/index.php\">Home</a></li>
+                <li><a href=\"#\">Movies</a></li>
+                <li><a href=\"#\">TV Shows</a></li>
+                <li><a href=\"#\">Top Rated</a></li>
+                <li><a href=\"/html/movie_review.php\">Review a Movie</a></li>
+                <li><a href=\"/html/show_review.php\">Review a Show</a></li>
+            </ul>
+            <section id=\"login\">
+                <a href=\"/html/login.php\">
+                    <button>Login</button>
+                </a>
+            </section>
+        </nav>
+        </header>";
     
     // Get title user searched for
     $searchTitle = htmlspecialchars($_GET['searchBar']);
@@ -263,13 +299,13 @@ if (isset($_GET['search'])) {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    $resultArray = $result->fetch_all(MYSQLI_ASSOC);
+    //$resultArray = $result->fetch_all(MYSQLI_ASSOC);
 
-    header('Content-Type: application/json'); // For sending json to client
-    echo json_encode($resultArray); ////////////////////////////////////////////
+    //header('Content-Type: application/json'); // For sending json to client
+    //echo json_encode($resultArray); ////////////////////////////////////////////
     //echo "<h1>Movies encoded json result</h1><p>" . $moviesJsonResult . "</p>";
     
-    exit; // Exiting here. Nothing below executes for now!
+    //exit; // Exiting here. Nothing below executes for now!
 
 
     echo "<h2>Movies</h2>";
@@ -423,6 +459,41 @@ if (isset($_GET['search'])) {
         "<br>Review:<br>" . $row['reviewText'] .
         "<br><br>------------------------------------<br><br>";
     }
+    // Print footer
+    echo "<footer>
+        <section id=\"About\">
+            <h4>CineReview</h4>
+            <p>Your trusted source for honest movie reviews.</p>
+        </section>
+
+        <section id=\"Footer Row 1\">
+            <h4>Movies</h4>
+            <ul>
+                <li><a href=\"#\">Now Playing</a></li>
+                <li><a href=\"#\">Coming Soon</a></li>
+                <li><a href=\"#\">Top Rated</a></li>
+            </ul>
+        </section>
+
+        <section id= \"Footer Row 2 \">
+            <h4>Community</h4>
+            <ul>
+                <li><a href=\"#\">Reviews</a></li>
+                <li><a href=\"#\">Discussions</a></li>
+                <li><a href=\"#\">Write a Review</a></li>
+            </ul>
+        </section>
+
+        <section id=\"Footer Row 3\">
+            <h4>Company</h4>
+            <ul>
+                <li><a href=\"#\">About Us</a></li>
+                <li><a href=\"#\">Contact</a></li>
+                <li><a href=\"#\">Privacy Policy</a></li>
+            </ul>
+        </section>
+    </footer>
+    </body>";
 }
 
 //***** Update *****//

@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +13,7 @@
         <nav>
             <h1>CineReview</h1>
             <ul>
-                <li><a href="/index.php">Home</a></li>
+                <li><a href="/index.html">Home</a></li>
                 <li><a href="#">Movies</a></li>
                 <li><a href="#">TV Shows</a></li>
                 <li><a href="#">Top Rated</a></li>
@@ -22,16 +21,10 @@
                 <li><a href="/html/show_review.php">Review a Show</a></li>
             </ul>
             <section id="login">
-                <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
-                    <span class="welcome">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                    <a href="/process.php?logout=true">
-                        <button>Logout</button>
-                    </a>
-                <?php else: ?>
-                    <a href="/html/login.php">
-                        <button>Login</button>
-                    </a>
-                <?php endif; ?>
+                <!-- Will be populated by JavaScript -->
+                <a href="/html/login.php">
+                    <button>Login</button>
+                </a>
             </section>
         </nav>
 
@@ -44,25 +37,7 @@
 
     <main>
 
-        <?php if (isset($_GET['success'])): ?>
-            <p class="success-message">
-                <?php
-                switch ($_GET['success']) {
-                    case 'logged_in':
-                        echo "Welcome back, " . htmlspecialchars($_SESSION['username']) . "!";
-                        break;
-                    case 'logged_out':
-                        echo "You have been logged out successfully.";
-                        break;
-                    case 'review_submitted':
-                        echo "Your review has been submitted successfully!";
-                        break;
-                    default:
-                        echo "Success!";
-                }
-                ?>
-            </p>
-        <?php endif; ?>
+        <div id="messageContainer"></div>
 
         <p id="test" name="test">If you see this: test failed.</p>
 
@@ -143,5 +118,62 @@
     </footer>
 
     <script src="/dataQuery.js"></script>
+    <script>
+        // Check login status and update UI
+        async function checkLoginStatus() {
+            try {
+                let response = await fetch('/process.php?checkSession=true');
+                let data = await response.json();
+                
+                const loginSection = document.getElementById('login');
+                
+                if (data.logged_in) {
+                    loginSection.innerHTML = `
+                        <span class="welcome">Welcome, ${data.username}</span>
+                        <a href="/process.php?logout=true">
+                            <button>Logout</button>
+                        </a>
+                    `;
+                } else {
+                    loginSection.innerHTML = `
+                        <a href="/html/login.php">
+                            <button>Login</button>
+                        </a>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error checking login status:', error);
+            }
+        }
+
+        // Check for success messages in URL
+        function checkSuccessMessages() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const success = urlParams.get('success');
+            const messageContainer = document.getElementById('messageContainer');
+            
+            if (success) {
+                let message = '';
+                switch (success) {
+                    case 'logged_in':
+                        message = 'Welcome back!';
+                        break;
+                    case 'logged_out':
+                        message = 'You have been logged out successfully.';
+                        break;
+                    case 'review_submitted':
+                        message = 'Your review has been submitted successfully!';
+                        break;
+                    default:
+                        message = 'Success!';
+                }
+                messageContainer.innerHTML = `<p class="success-message">${message}</p>`;
+            }
+        }
+
+        // Run on page load
+        checkLoginStatus();
+        checkSuccessMessages();
+    </script>
 </body>
 </html>
